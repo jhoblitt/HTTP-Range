@@ -54,6 +54,9 @@ be advantageous on high latency network links where a single TCP session won't
 scale to use all available bandwidth and it will probably circumvent some HTTP
 bandwidth throttling techniques.
 
+This module is similar in function to both the L</"Prozilla"> and L</"McURL">
+programs. 
+
 =head1 IMPORT PARAMETERS
 
 This module accepts no arguments to it's C<import> method and exports no
@@ -165,6 +168,14 @@ L<ftp://ftp.rfc-editor.org/in-notes/rfc2616.txt>
 Link Aggregation, Claus 43 (in Section Three) of IEEE 802.3 
 
 L<http://standards.ieee.org/getieee802/802.3.html>
+
+=item Prozilla
+
+L<http://prozilla.genesys.ro/>
+
+=item McURL
+
+L<http://www.goforlinux.de/scripts/mcurl/>
 
 =back
 
