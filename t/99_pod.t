@@ -1,3 +1,7 @@
+# Copyright (C) 2003  Iain Truskett
+#
+# $Id$
+
 use strict;
 use warnings;
 
