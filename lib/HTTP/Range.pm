@@ -123,16 +123,6 @@ sub join
                     },
                 },
             },
-#            file_handle => {
-#                optional    => 1,
-#                callbacks   => {
-#                    'file_handle is seekable'   => sub {
-#                        isa( $_[0], 'IO::Handle' )
-#                        || ( can( $_[0], 'sysseek' )
-#                        && can( $_[0], 'syswrite' ) );
-#                    },
-#                },
-#            },
         },
     );
 
