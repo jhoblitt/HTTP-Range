@@ -16,6 +16,7 @@ require Set::Infinite;
 use HTTP::Status qw( RC_OK );
 use Params::Validate qw( :all );
 use UNIVERSAL qw( isa can );
+use Carp qw( croak );
 
 my $DEBUG = 0;
 
@@ -128,10 +129,10 @@ sub join
 
     # validate each object in the responses arrayref
     foreach my $res ( @{ $args{ 'responses' } } ) {
-        die "not isa HTTP::Response" unless isa( $res, 'HTTP::Response' );
-        die "not a successful HTTP status" unless HTTP::Status::is_success( $res->code );
-        die "multi-part messages are not supported" if @{[ $res->parts ]};
-        die "segment has invalid content length" unless length $res->content == $res->content_length;
+        croak "not isa HTTP::Response" unless isa( $res, 'HTTP::Response' );
+        croak "not a successful HTTP status" unless HTTP::Status::is_success( $res->code );
+        croak "multi-part messages are not supported" if @{[ $res->parts ]};
+        croak "segment has invalid content length" unless length $res->content == $res->content_length;
     }
 
     # scalar w/ IO::Handle interface to hold the reassembled segments
@@ -154,10 +155,10 @@ sub join
         # seek to the appropriate location and write the current segment
         # functions (instead of methods) are used for compatibility with IO::Handle
         unless ( defined sysseek( $content, $start, 0 ) ) {
-            die "sysseeking response content";
+            croak "sysseeking response content";
         }
         if ( syswrite( $content, $res->content, $res->header( 'Content-Length' ), 0 ) != $len ){
-            die "syswriting response content";
+            croak "syswriting response content";
         }
 
         # free the contents memory
@@ -167,7 +168,7 @@ sub join
     # if a content length was specified check it against what was received
     if ( defined $args{ 'length' } ) {
         if ( $args{ 'length'} != length ${ $content->string_ref } ) {
-            die "specified content length does not equal received content length";
+            croak "specified content length does not equal received content length";
         }
 
         # create a set of spans representing our segments
@@ -185,7 +186,7 @@ sub join
         # look for differences between our segments and content length
         $len_set = $len_set->minus( $set );
         warn "left over set is: $len_set\n" if $DEBUG;
-        die "missing or incomplete segments" if $len_set;
+        croak "missing or incomplete segments" if $len_set;
     
     }
 
@@ -202,7 +203,7 @@ sub join
             next;
         }
 
-        die "segments overlap" if $last_span->intersection( $span );
+        croak "segments overlap" if $last_span->intersection( $span );
     }
 
     # create the return HTTP::Response object as a clone of the first object passed in
