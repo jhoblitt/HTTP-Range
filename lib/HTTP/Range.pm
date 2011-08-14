@@ -1,6 +1,4 @@
 # Copyright (C) 2004  Joshua Hoblitt
-#
-# $Id$
 
 package HTTP::Range;
 
